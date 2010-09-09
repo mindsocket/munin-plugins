@@ -1,0 +1,27 @@
+#!/bin/sh
+
+if [ "$1" == "config" ]; then
+cat <<_FOO_
+graph_title Facebook activity
+graph_category social
+graph_args --lower-limit 0.01 --logarithmic --units=si
+fbstream.label Stream activity
+fbstream.type GAUGE
+fbfriends.label Friend count
+fbfriends.type GAUGE
+fbfonline.label Friends online
+fbfonline.type GAUGE
+_FOO_
+exit 0;
+fi
+
+echo -n 'fbstream.value '
+fbcmd stream 0 new | grep "^\[" | wc -l | sed 's/\t +//' | sed 's/ *//'
+echo -n 'fbfriends.value '
+fbcmd friends | wc -l | sed 's/\t +//' | sed 's/ *//'
+echo -n 'fbfonline.value '
+fbcmd fonline | wc -l | sed 's/\t +//' | sed 's/ *//'
+
+#exit 0;
+#roger@cheese:/usr/local/src/munin-plugins/social$ fbcmd notify
+
