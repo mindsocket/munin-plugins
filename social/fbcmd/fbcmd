@@ -11,6 +11,18 @@ fbfriends.label Friend count
 fbfriends.type GAUGE
 fbfonline.label Friends online
 fbfonline.type GAUGE
+messages_unread.label Unread messages
+messages_unread.type GAUGE
+pokes.label Pokes
+pokes.type GAUGE
+shares_unread.label Unread shares
+shares_unread.type GAUGE
+friend_requests.label Friend requests
+friend_requests.type GAUGE
+group_invites.label Group invites
+group_invites.type GAUGE
+event_invites.label Event invites
+event_invites.type GAUGE
 _FOO_
 exit 0;
 fi
@@ -22,6 +34,5 @@ fbcmd friends | wc -l | sed 's/\t +//' | sed 's/ *//'
 echo -n 'fbfonline.value '
 fbcmd fonline | wc -l | sed 's/\t +//' | sed 's/ *//'
 
-#exit 0;
-#roger@cheese:/usr/local/src/munin-plugins/social$ fbcmd notify
+fbcmd notify | egrep "UNREAD|POKES|REQUESTS|INVITES" | sed 's/\t +//' | sed 's/ *//' | sed -e 's/ \+/.value /g' | tr '[:upper:]' '[:lower:]'
 
